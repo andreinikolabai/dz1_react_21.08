@@ -115,6 +115,7 @@ const CARS = [
         ]
     },
 ];
+const toCapitalize = value => value[0].toUpperCase()+value.slice(1).toLowerCase();
 
 root.render(<React.Fragment>
     <h1>Car Specs</h1>
@@ -134,7 +135,7 @@ root.render(<React.Fragment>
                                         Object
                                             .keys(car)
                                             .filter(k => k!==`id`)
-                                            .map((k,i) => <li key={i}>{car[k]}</li>)
+                                            .map((k,i) => <li key={i}>{toCapitalize(k)}: {car[k]}</li>)
                                     }
                                     </ul>
                                 </td>

@@ -90,6 +90,9 @@ var CARS = [{
         }]
     }]
 }];
+var toCapitalize = function toCapitalize(value) {
+    return value[0].toUpperCase() + value.slice(1).toLowerCase();
+};
 
 root.render(React.createElement(
     React.Fragment,
@@ -140,6 +143,8 @@ root.render(React.createElement(
                                             return React.createElement(
                                                 "li",
                                                 { key: i },
+                                                toCapitalize(k),
+                                                ": ",
                                                 car[k]
                                             );
                                         })
