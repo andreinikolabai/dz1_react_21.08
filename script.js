@@ -1,8 +1,7 @@
 var domContainer = document.querySelector('#root');
 var root = ReactDOM.createRoot(domContainer);
 
-var carsTitle = "Car Specs";
-var carsData = [{
+var CARS = [{
     id: 1,
     brand: "Audi",
     models: [{
@@ -91,13 +90,14 @@ var carsData = [{
         }]
     }]
 }];
-var Cars = React.createElement(
+
+root.render(React.createElement(
     React.Fragment,
     null,
     React.createElement(
         "h1",
         null,
-        carsTitle
+        "Car Specs"
     ),
     React.createElement(
         "table",
@@ -105,99 +105,44 @@ var Cars = React.createElement(
         React.createElement(
             "tbody",
             null,
-            carsData.map(function (car) {
+            CARS.map(function (brand, index) {
                 return React.createElement(
                     React.Fragment,
-                    { key: car.id },
+                    { key: index },
                     React.createElement(
                         "tr",
-                        { className: "row__brand", style: { background: "#4051B5", color: "white" } },
+                        { className: "row__brand", key: brand.id },
                         React.createElement(
                             "th",
-                            { colSpan: "2" },
-                            car.brand
+                            { colSpan: 2 },
+                            brand.brand
                         )
                     ),
-                    car.models.map(function (model) {
-                        return model.collection.map(function (item, index) {
+                    brand.models.map(function (model) {
+                        return model.collection.map(function (car, index) {
                             return React.createElement(
-                                React.Fragment,
-                                { key: item.id },
-                                index === 0 && React.createElement(
-                                    "tr",
+                                "tr",
+                                { key: index },
+                                !index ? React.createElement(
+                                    "th",
+                                    { rowSpan: model.collection.length, className: "cell__model" },
+                                    model.name
+                                ) : null,
+                                React.createElement(
+                                    "td",
                                     null,
                                     React.createElement(
-                                        "th",
-                                        { rowSpan: model.collection.length, className: "cell__model", style: { background: "#E91E63", color: "white" } },
-                                        model.name
-                                    ),
-                                    React.createElement(
-                                        "td",
+                                        "ul",
                                         null,
-                                        React.createElement(
-                                            "ul",
-                                            null,
-                                            React.createElement(
+                                        Object.keys(car).filter(function (k) {
+                                            return k !== "id";
+                                        }).map(function (k, i) {
+                                            return React.createElement(
                                                 "li",
-                                                null,
-                                                "Version: ",
-                                                item.version
-                                            ),
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Year: ",
-                                                item.year
-                                            ),
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Horsepower: ",
-                                                item.horsepower
-                                            ),
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Engine: ",
-                                                item.engine
-                                            )
-                                        )
-                                    )
-                                ),
-                                index !== 0 && React.createElement(
-                                    "tr",
-                                    null,
-                                    React.createElement(
-                                        "td",
-                                        null,
-                                        React.createElement(
-                                            "ul",
-                                            null,
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Version: ",
-                                                item.version
-                                            ),
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Year: ",
-                                                item.year
-                                            ),
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Horsepower: ",
-                                                item.horsepower
-                                            ),
-                                            React.createElement(
-                                                "li",
-                                                null,
-                                                "Engine: ",
-                                                item.engine
-                                            )
-                                        )
+                                                { key: i },
+                                                car[k]
+                                            );
+                                        })
                                     )
                                 )
                             );
@@ -207,6 +152,4 @@ var Cars = React.createElement(
             })
         )
     )
-);
-
-root.render(Cars);
+));

@@ -1,8 +1,7 @@
 const domContainer = document.querySelector('#root');
 const root = ReactDOM.createRoot(domContainer);
 
-const carsTitle = `Car Specs`;
-const carsData = [
+const CARS = [
     {
         id: 1,
         brand: "Audi",
@@ -115,53 +114,35 @@ const carsData = [
             }
         ]
     },
-]
-const Cars = (
-    <React.Fragment>
-        <h1>{carsTitle}</h1>
-        <table>
-            <tbody>
-            {carsData.map(car => (
-                <React.Fragment key={car.id}>
-                    <tr className="row__brand" style={{background: `#4051B5`, color: `white`}}>
-                        <th colSpan="2">{car.brand}</th>
-                    </tr>
-                    {car.models.map(model => (
-                        model.collection.map((item, index) => (
-                            <React.Fragment key={item.id}>
-                                {index === 0 && (
-                                    <tr>
-                                        <th rowSpan={model.collection.length} className="cell__model" style={{background: `#E91E63`, color: `white`}}>{model.name}</th>
-                                        <td>
-                                            <ul>
-                                                <li>Version: {item.version}</li>
-                                                <li>Year: {item.year}</li>
-                                                <li>Horsepower: {item.horsepower}</li>
-                                                <li>Engine: {item.engine}</li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                )}
-                                {index !== 0 && (
-                                    <tr>
-                                        <td>
-                                            <ul><
-                                                li>Version: {item.version}</li>
-                                                <li>Year: {item.year}</li>
-                                                <li>Horsepower: {item.horsepower}</li>
-                                                <li>Engine: {item.engine}</li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                )}
-                            </React.Fragment>
-                        ))
-                    ))}
-                </React.Fragment>
-            ))}
-            </tbody>
-        </table>
-    </React.Fragment>
-);
+];
 
-root.render(Cars);
+root.render(<React.Fragment>
+    <h1>Car Specs</h1>
+    <table>
+        <tbody>
+        {
+            CARS.map((brand,index) => <React.Fragment key={index}>
+                    <tr className="row__brand" key={brand.id}>
+                        <th colSpan={2}>{brand.brand}</th>
+                    </tr>
+                    {brand.models
+                        .map(model => model.collection
+                            .map((car,index) => <tr key={index}>
+                                {!index ? <th rowSpan={model.collection.length} className="cell__model">{model.name}</th> : null}
+                                <td>
+                                    <ul>{
+                                        Object
+                                            .keys(car)
+                                            .filter(k => k!==`id`)
+                                            .map((k,i) => <li key={i}>{car[k]}</li>)
+                                    }
+                                    </ul>
+                                </td>
+                            </tr>)
+                        )}
+                </React.Fragment>
+            )
+        }
+        </tbody>
+    </table>
+</React.Fragment>);
